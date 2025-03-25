@@ -1,0 +1,131 @@
+print('Bem vindo a Fábrica de Camisetas da Kathleen Soares\n')
+
+# Controla o fluxo das etapas.
+validacao = 1
+
+# Dicionário para definição dos modelos e valores de camisetas.
+modelo_camisetas = {
+    "MCS": 1.80,
+    "MLS": 2.10,
+    "MCE": 2.90,
+    "MLE": 3.20
+}
+
+
+# Função para solicitar ao cliente a escolha do modelo de camisetas.
+def escolha_modelo():
+    global validacao  # Controla o fluxo dentro da função.
+    while validacao == 1:
+        # Imprime na tela as opções de camisetas para o cliente.
+        print('Entre com o modelo desejado ')
+        print('MCS - Manga Curta Simples')
+        print('MLS - Manga Longa Simples')
+        print('MCE - Manga Curta com Estampa')
+        print('MLE - Manga Longa com Estampa')
+
+        modelo_desejado = input('>> ')
+
+        if modelo_desejado not in modelo_camisetas:
+            print('Escolha inválida, entre com o modelo novamente.\n')
+        else:
+            validacao = 2  # Atualiza a validação para a próxima etapa.
+            return modelo_desejado
+
+
+# Chama a função e armazena o resultado.
+modeloEscolhido = escolha_modelo()
+
+
+# Função para solicitar ao cliente a quantidade de camisetas.
+def num_camisetas():
+    global validacao
+    while validacao == 2:
+        try:
+            quantidade = int(input('Entre com o número de camisetas: '))
+
+            if quantidade > 20000:  # Verifica se a quantidade excede o número permitido.
+                print('Não aceitamos tantas camisetas de uma vez.')
+                print('Por favor, entre com o número de camisetas novamente.\n')
+            elif quantidade < 1:
+                print('Por favor, entre com o número de camisetas novamente.\n')
+            else:
+                validacao = 3
+                return quantidade
+
+        except ValueError:
+            print('Entrada Inválida.')
+
+
+# Chama a função e armazena o resultado.
+numero_camisas = num_camisetas()
+
+
+# Dicionário para definição dos valores do frete.
+valoresFrete = {
+    "1": 100.00,
+    "2": 200.00,
+    "0": 0.00
+}
+
+
+# Função que solicita o tipo de frete a ser escolhido.
+def frete():
+    global validacao
+    while validacao == 3:
+        print('\nEscolha o tipo de frete:')
+        print('1 - Frete por transportadora - R$ 100.00')
+        print('2 - Frete por Sedex - R$ 200.00')
+        print('0 - Retirar pedido na fábrica - R$ 0.00')
+
+        frete_escolhido = input('>> ')
+        if frete_escolhido not in valoresFrete:
+            frete()  # Chama a função novamente caso a escolha seja inválida.
+        else:
+            validacao = 4
+        return frete_escolhido
+
+
+# Chama a função e armazena o resultado.
+tipoFrete = frete()
+
+
+# Função para calcular o desconto baseado na quantidade de camisetas escolhida.
+def desconto():
+    if numero_camisas < 20:
+        porcentagem_desconto = 0.0  # 0%
+        return porcentagem_desconto
+
+    if 20 <= numero_camisas < 200:
+        porcentagem_desconto = 0.05  # 5%
+        return porcentagem_desconto
+
+    elif 200 <= numero_camisas < 2000:
+        porcentagem_desconto = 0.07  # 7%
+        return porcentagem_desconto
+
+    elif 2000 <= numero_camisas <= 20000:
+        porcentagem_desconto = 0.12  # 12%
+        return porcentagem_desconto
+
+
+# Chama a função e calcula o desconto.
+totalDesconto = desconto()
+
+# Recupera o preço do modelo escolhido e o valor do frete
+x = modelo_camisetas[modeloEscolhido]
+y = valoresFrete[tipoFrete]
+
+# Calcula a quantidade de camisetas com desconto aplicado
+qtd_com_desc = numero_camisas - (numero_camisas * totalDesconto)
+
+# Calcula o valor total das camisetas.
+valor_camisas = numero_camisas * modelo_camisetas[modeloEscolhido]
+
+# Calcula o valor do desconto aplicado.
+desconto_valor = valor_camisas * totalDesconto
+
+# Calcula o valor final da conta, subtraindo o desconto e somando o frete.
+valorTotal = (valor_camisas - desconto_valor) + valoresFrete[tipoFrete]
+
+# Exibe o total formatado
+print(f'Total R$ {valorTotal: .2f} (Modelo: {x: .2f} * Quantidade(com desconto): {qtd_com_desc: .0f} + frete: {y: .2f}) ')
