@@ -1,0 +1,51 @@
+boasVindas = 'Bem-vindos a Loja de Marmitas da Kathleen Soares'
+cardapio = 'Cardápio'
+# Imprime o menu para o cliente.
+print(f"{'-' * 9} {boasVindas} {'-' * 8}")
+print(f"{'-' * 28} {cardapio} {'-' * 29}")
+print('-' * 67)
+print(f"{'-' * 3}|  Tamanho  |  Bife Acebolado (BA)  |  Filé de Frango (FF)  |{'-' * 3}")
+print(f"{'-' * 3}|     P     |        R$ 16.00       |        R$ 15.00       |{'-' * 3}")
+print(f"{'-' * 3}|     M     |        R$ 18.00       |        R$ 17.00       |{'-' * 3}")
+print(f"{'-' * 3}|     G     |        R$ 22.00       |        R$ 21.00       |{'-' * 3}")
+print('-' * 67)
+
+# Atribui o tamanho e preço para cada opção do menu.
+menu = {
+    'BA': {'P': 16.00, 'M': 18.00, 'G': 22.00},
+    'FF': {'P': 15.00, 'M': 17.00, 'G': 21.00}
+}
+
+total = 0.0  # Acumulador da soma dos valores pedidos pelo cliente.
+
+while True:
+    sabor = input('Entre com o sabor desejado (BA/FF): ')  # Solicita o sabor ao cliente.
+    if sabor not in menu:  # Verifica se o sabor escolhido é válido.
+        print('Sabor inválido. Tente novamente.\n')
+        continue
+
+    tamanho = input('Entre com o tamanho desejado (P/M/G): ')  # Solicita o tamanho ao cliente.
+    if tamanho not in menu[sabor]:  # Verifica se o tamanho escolhido é válido.
+        print('Tamanho inválido. Tente novamente.\n')
+        continue
+
+    # Atribui o preço conforme a escolha do cliente.
+    preco = menu[sabor][tamanho]
+    total += preco  # Adiciona o preço ao total.
+
+    # Conversão dos sabores em nome completo.
+    if sabor == 'BA':
+        sabor = 'Bife Acebolado'
+    elif sabor == 'FF':
+        sabor = 'Filé de Frango'
+
+    # Imprime o sabor e tamanho escolhidos assim como o preço.
+    print(f'Você pediu um {sabor} no tamanho {tamanho}: R$ {preco:.2f}\n')
+
+    # Verifica se o cliente deseja algo mais.
+    algoMais = input('Deseja mais alguma coisa? (S/N): ')
+    if algoMais == 'N':
+        break
+
+# Imprime o valor total a ser pago.
+print(f'\nO valor total a ser pago: R$ {total:.2f}')
