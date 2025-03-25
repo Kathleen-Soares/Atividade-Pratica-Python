@@ -1,0 +1,158 @@
+print('Bem vindos a Empresa da Kathleen Soares')
+print('-' * 60)
+
+id_global = 4648267  # Declaração de uma variável global para gerar IDs únicos a cada iteração.
+lista_funcionarios = []  # Declaração de uma lista vazia que irá armazenar os dados dos funcionários cadastrados.
+
+
+def menu_principal(id):  # Definição da função que receberá o ID como argumento.
+    while True:  # Loop infinito para exibir a estrutura de menu e processar as opções selecionadas pelo usuário.
+        print(f"{'-' * 22} MENU PRINCIPAL {'-' * 22}")
+        print('Escolha a opção desejada: ')
+        print('1 - Cadastrar Funcionários')
+        print('2 - Consultar Funcionário(s)')
+        print('3 - Remover Funcionário')
+        print('4 - Sair')
+
+        try:
+            menu = int(input('>> '))  # Entrada do usuário para a opção do menu.
+        except ValueError:  # Verificação do dado de entrada caso não seja um número.
+            print('Entrada inválida. Por favor, escolha uma opção numérica.')
+            continue
+
+        if menu == 1:  # Incrementa o ID e chama a função para cadastrar funcionário.
+            id += 1
+            cadastrar_funcionario(id)
+
+        elif menu == 2:  # Chama a função para consultar funcionário.
+            consultar_funcionario()
+
+        elif menu == 3:  # Chama a função para remover funcionário.
+            remover_funcionario()
+
+        elif menu == 4:  # Encerra o programa.
+            print('Programa Encerrado.')
+            break
+
+        else:  # Retorna 'opção inválida' caso a entrada seja diferente das opções fornecidas.
+            print('Opção Inválida.')
+
+
+def cadastrar_funcionario(id):  # Função para cadastrar funcionário.
+    while True:
+        print('-' * 60)
+        print(f"{'-' * 16} MENU CADASTRAR FUNCIONÁRIO {'-' * 16}")
+        print(f'Id do Funcionário: {id}')
+
+        # Entrada de dados para cadastro do funcionário.
+        nome = input('Por favor entre com o nome do Funcionário: ')
+        setor = input('Por favor entre com o setor do Funcionário: ')
+
+        try:  # Entrada do salário e verificação do dado de entrada caso não seja numérico.
+            salario = float(input(f'Por favor entre com o salário do Funcionário: '))
+            print('-' * 60)
+        except ValueError:
+            print('Entrada inválida. Por favor, insira um valor numérico para o salário.')
+            continue
+
+        # Criação de um dicionário para armazenar os dados do funcionário.
+        cadastro = {
+            'id': id,
+            'nome': nome,
+            'setor': setor,
+            'salario': salario
+        }
+
+        # Copia o dicionário para dentro da lista funcionários.
+        lista_funcionarios.append(cadastro.copy())
+        menu_principal(id)  # Retorna ao menu principal.
+        break
+
+
+def consultar_funcionario():  # Função para consultar funcionários cadastrados.
+    print('-' * 60)
+    print(f"{'-' * 16} MENU CONSULTAR FUNCIONÁRIO {'-' * 16}")
+    print('Escolha a opção desejada:')
+    print('1 - Consultar Todos os Funcionários')
+    print('2 - Consultar Funcionário por id')
+    print('3 - Consultar Funcionário(s) por setor')
+    print('4 - Retornar')
+
+    try:  # Entrada de dado e verificação de erro caso não seja numérico.
+        consultar = int(input('>> '))
+    except ValueError:
+        print('Entrada inválida. Por favor, escolha uma opção numérica.')
+        return
+
+    print('-' * 20)
+    if consultar == 1:  # Processamento da opção escolhida pelo usuário
+        for funcionario in lista_funcionarios:  # Retorna todos os funcionários cadastrados.
+            print(f"id: {funcionario['id']}")
+            print(f"nome: {funcionario['nome']}")
+            print(f"setor: {funcionario['setor']}")
+            print(f"salário: {funcionario['salario']}")
+            print()
+
+    elif consultar == 2:  # Processamento da entrada com base no ID fornecido.
+        digite_id = int(input('Digite o id do funcionário: '))
+        print('-' * 20)
+
+        for funcionario in lista_funcionarios:
+            if digite_id == funcionario['id']:
+                print(f"id: {funcionario['id']}")
+                print(f"nome: {funcionario['nome']}")
+                print(f"setor: {funcionario['setor']}")
+                print(f"salário: {funcionario['salario']}")
+                print('-' * 60)
+                break
+
+            else:  # Verificação de erro.
+                print('Funcionário não encontrado.')
+
+    elif consultar == 3:  # Processamento da entrada por setor fornecido.
+        digite_setor = input('Digite o setor do(s) funcionário(s): ')
+        print('-' * 20)
+
+        encontrado = False  # Variável para determinar se o funcionário foi encontrado ou não.
+        for funcionario in lista_funcionarios:
+            if digite_setor == funcionario['setor']:  # Verifica se o setor do funcionário corresponde ao fornecido.
+                print(f"id: {funcionario['id']}")
+                print(f"nome: {funcionario['nome']}")
+                print(f"setor: {funcionario['setor']}")
+                print(f"salário: {funcionario['salario']}")
+                print()
+                encontrado = True
+
+        if not encontrado:  # Verificação de erro.
+            print('Funcionário não encontrado.')
+
+    elif consultar == 4:  # Retorna ao menu principal.
+        return
+
+    else:  # Verificação de erro e retorna ao menu consultar funcionário.
+        print('Opção Inválida.')
+    consultar_funcionario()
+
+
+def remover_funcionario():  # Função para remover um funcionário.
+    print('-' * 60)
+    print(f"{'-' * 17} MENU REMOVER FUNCIONÁRIO {'-' * 17}")
+
+    try:  # Entrada de dado via ID e verificação de erro caso não seja válido.
+        rmv_funcionario = int(input('Digite o id do funcionário a ser removido: '))
+    except ValueError:
+        print('Entrada inválida. Por favor, insira um id numérico.')
+        return
+
+    for funcionario in lista_funcionarios:  # Remove funcionário com ID fornecido.
+        if rmv_funcionario == funcionario['id']:
+            lista_funcionarios.remove(funcionario)
+            print('Funcionário removido com sucesso!')
+            print('-' * 60)
+            return
+
+    print('Id inválido.')  # Verificação de erro caso não seja correspondente.
+    remover_funcionario()  # Retorna ao menu remover funcionário.
+
+
+menu_principal(id_global)  # Chama a função menu principal com o ID Global.
