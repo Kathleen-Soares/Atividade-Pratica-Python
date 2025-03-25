@@ -1,0 +1,32 @@
+print('Bem-vindo a Loja da Kathleen Soares')
+
+# Solicita ao usuário o valor total do pedido e a quantidade de parcelas desejada.
+valorDoPedido = float(input('Entre com o valor do pedido: '))
+quantidadeParcelas = int(input('Entre com a quantidade de parcelas: '))
+
+# Atribuição das entradas para variáveis simplificadas
+qtd = quantidadeParcelas
+pedido = valorDoPedido
+
+# Cálculo da taxa de juros conforme número de parcelas solicitada.
+if qtd < 4:
+    juros = 0.0  # 0% de juros.
+
+elif qtd < 6:
+    juros = 0.04  # 4% de juros.
+
+elif qtd < 9:
+    juros = 0.08  # 8% de juros.
+
+elif qtd < 13:
+    juros = 0.16  # 16% de juros.
+
+else:
+    juros = 0.32  # 32% de juros.
+
+valorParcela = pedido * (1 + juros) / qtd  # Cálculo do valor das parcelas incluindo a taxa de juros.
+valorTotalParcela = valorParcela * qtd  # Cálculo do valor total do pedido parcelado com a taxa de juros.
+
+# Output do valor de cada parcela e o valor final do pedido com juros.
+print(f'O valor das Parcelas é de: R$ {valorParcela:.2f}')
+print(f'O valor Total Parcelado é de: R$ {valorTotalParcela:.2f}')
